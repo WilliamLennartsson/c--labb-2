@@ -42,12 +42,21 @@ namespace Labb2
             System.IO.StreamReader file = new System.IO.StreamReader(filePath);
             while ((line = file.ReadLine()) != null)
             {
-                System.Console.WriteLine(line);
+                //System.Console.WriteLine(line);
                 string[] bits = line.Split(',');
-                //string cho = bits[0].Split('(');
-                //double x = double.Parse(bits[0]);
-
-                //double y = double.Parse(bits[1]);
+                try
+                {
+                    string a = bits[0].Split('(')[1];
+                    string b = bits[1].Split(')')[0];
+                    double x = Convert.ToDouble(a);
+                    double y = Convert.ToDouble(b);
+                    posList.Add(new Position(x, y));
+                } 
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error parsing line: " + e);
+                }
+                
                 index++;
             }
             file.Close();

@@ -8,6 +8,10 @@ namespace Labb2
         {
 
             SortedPosList listWithPath = new SortedPosList(@"c:\users\willi\Documents\test.txt");
+            for (int i = 0; i < listWithPath.Count(); i++)
+            {
+                Console.WriteLine(listWithPath[i].ToString());
+            }
 
             Position pos1 = new Position(47, 14);
             Position pos2 = new Position(10, 18);
@@ -38,11 +42,11 @@ namespace Labb2
 
             SortedPosList list3 = list2 - list;
 
-            Console.WriteLine(list.Count());
+            //Console.WriteLine(list.Count());
 
             for (int i = 0; i < list3.Count(); i++)
             {
-                Console.WriteLine(list3[i].ToString() + ".  Length: " + list3[i].length());
+                //Console.WriteLine(list3[i].ToString() + ".  Length: " + list3[i].length());
             }
 
             /* list.Remove(new Position(80, 64));

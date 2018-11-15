@@ -71,8 +71,8 @@ namespace Labb2
         }
         public override string ToString()
         {
-            Console.WriteLine("(" + X + ", " + Y + ")");
-            return base.ToString();
+            string s = "(" + X + ", " + Y + ")";
+            return s;
         }
         public double length()
         {

@@ -8,3 +8,4 @@ C:\Users\willi\Documents\schuuul\C#\Labb2\Labb2\bin\Debug\netcoreapp2.1\Labb2.dl
 C:\Users\willi\Documents\schuuul\C#\Labb2\Labb2\bin\Debug\netcoreapp2.1\Labb2.pdb
 C:\Users\willi\Documents\schuuul\C#\Labb2\Labb2\obj\Debug\netcoreapp2.1\Labb2.dll
 C:\Users\willi\Documents\schuuul\C#\Labb2\Labb2\obj\Debug\netcoreapp2.1\Labb2.pdb
+C:\Users\willi\Documents\schuuul\C#\Labb2\Labb2\obj\Debug\netcoreapp2.1\Labb2.csprojAssemblyReference.cache

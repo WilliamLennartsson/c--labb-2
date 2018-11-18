@@ -22,11 +22,13 @@ namespace Labb2
             }
             set
             {
-                posList = value;
+                //posList = value;
+                Console.WriteLine("Cannot set value. Use the Add method");
             }
         }
         private string filePath;
-
+        private StreamWriter stream;
+        private bool isConnectedToFile = false;
 
         //Constructors
         public SortedPosList()
@@ -38,6 +40,7 @@ namespace Labb2
             posList = new List<Position>();
             filePath = path;
             loadFileToList(path);
+            isConnectedToFile = true;
         }
 
         //File handlers
@@ -67,6 +70,7 @@ namespace Labb2
             }
             file.Close(); /* Closes file when completed */
         }
+
         private Position parseString(string line)
         {
             string[] bits = line.Split(',');
@@ -85,28 +89,58 @@ namespace Labb2
                 return null;
             }
         }
-
-        public bool saveFile(int index, Position pos)
+        public bool SavePosToFile(int index, Position pos)
         {
-
             List<string> coordList = File.ReadAllLines(filePath).ToList();
+            string stringToSave = pos.ToString(); // "(" + pos.X + "," + pos.Y + ")";
 
-            string lineToSave = "(" + pos.X + "," + pos.Y + ")";
-            Console.WriteLine("index: " + index + "coordlist count: " + coordList.Count());
-            if (index == coordList.Count())
+            //Checks whether to append or insert new line. 
+
+            //Appends Line
+            using (StreamWriter stream = File.AppendText(filePath)){
+                Console.WriteLine("INDEX <= Count: " + coordList.Count() + " Index: " + index);
+                if ((coordList.Count() == 0) || (index >= Count()))
+                {
+                    stream.WriteLine(stringToSave);
+                    return true;
+                }
+            }
+            //Inserts new line
+            if (index >= 0 && index < coordList.Count())
             {
-                File.AppendText(lineToSave);
-            } else
-            {
-                coordList.Insert(index, lineToSave);
+                coordList.Insert(index, stringToSave);
                 File.WriteAllLines(filePath, coordList);
+                return true;
             }
             
-            for (int i = 0; i < coordList.Count(); i++)
-            {
-                Console.WriteLine(coordList[i]);
+            return false;
+        } 
+        private bool RemovePosFromFile(Position pos)
+        {
+            string searchContent = pos.ToString();
+            string[] allLines = File.ReadAllLines(filePath);
+            List<string> sortedList = new List<string>();
+            string line;
 
+            bool didFind = false;
+            int index = 0;
+
+            StreamReader file = new StreamReader(filePath);
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line.Equals(searchContent) && didFind == false)
+                {
+                    didFind = true;
+                }
+                else 
+                {
+                    sortedList.Add(allLines[index]);
+                }
+                index++;
             }
+            file.Close();
+            File.WriteAllLines(filePath, sortedList);
+
             return true;
         }
 
@@ -119,15 +153,19 @@ namespace Labb2
                 if (len < posList[i].Length())
                 {
                     posList.Insert(i, pos);
-                    Console.WriteLine("Add method. i: " + i + " Filepath: " + filePath);
-                    if (filePath != null) // Save to file if path is filePath is set
+                    //Console.WriteLine("Add method. i: " + i + " Filepath: " + filePath);
+                    if (isConnectedToFile) // Save to file if path is filePath is set
                     {
-                        saveFile(i, pos);
+                        SavePosToFile(i, pos);
                     }
                     return;
                 }
             }
             posList.Add(pos); /* Inserted pos len is the biggest number in the list so it's added last */
+            if (isConnectedToFile)
+            {
+                SavePosToFile(posList.Count(), pos);
+            }
         }
         public SortedPosList Clone()
         {
@@ -153,11 +191,15 @@ namespace Labb2
             {
                 if (posList[i].Equals(pos))
                 {
+                    if (isConnectedToFile)
+                    {
+                        RemovePosFromFile(posList[i]);
+                    }
                     posList.Remove(posList[i]);
                     return true;
                 }
             }
-            return true;
+            return false;
         }
         public SortedPosList CircleContent(Position centerPos, double radius)
         {

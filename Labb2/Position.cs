@@ -71,7 +71,7 @@ namespace Labb2
         }
         public override string ToString()
         {
-            string s = "(" + X + ", " + Y + ")";
+            string s = "(" + X + "," + Y + ")";
             return s;
         }
         public double Length()

@@ -25,15 +25,22 @@ namespace Labb2
         }
         private static void pathTest()
         {
+            // Testing a list connected to a path. 
+            // Save / Load / Parse method tested. 
             SortedPosList listWithPath = new SortedPosList(@"c:\users\willi\Documents\test.txt");
-            Position posM = new Position(12, 37);
-            Position posN = new Position(100, 114);
+            Position posM = new Position(123, 37);
+            Position posN = new Position(14, 55);
+            Position posK = new Position(3, 69);
             listWithPath.Add(posM);
             listWithPath.Add(posN);
+            listWithPath.Add(posK);
+            listWithPath.Remove(posM);
+            listWithPath.Remove(posM);
+
 
             for (int i = 0; i < listWithPath.Count(); i++)
             {
-                //Console.WriteLine(listWithPath[i].ToString());
+                Console.WriteLine(listWithPath[i].ToString());
             }
         }
         private static void WillTest()

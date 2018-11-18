@@ -55,7 +55,7 @@ namespace Labb2
         }
 
         // Methods
-        public Position clone()
+        public Position Clone()
         {
             return new Position(X, Y);
         }
@@ -74,7 +74,7 @@ namespace Labb2
             string s = "(" + X + ", " + Y + ")";
             return s;
         }
-        public double length()
+        public double Length()
         {
             return Math.Sqrt((X * X) + (Y * Y));
         }
@@ -82,7 +82,7 @@ namespace Labb2
         // Operators
         public static bool operator > (Position p1, Position p2)
         {
-            if (p1.length() > p2.length())
+            if (p1.Length() > p2.Length())
             {
                 return true;
             } else
@@ -92,7 +92,7 @@ namespace Labb2
         }
         public static bool operator < (Position p1, Position p2)
         {
-            if (p1.length() < p2.length())
+            if (p1.Length() < p2.Length())
             {
                 return true;
             }

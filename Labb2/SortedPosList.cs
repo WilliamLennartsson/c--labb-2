@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Labb2
 {
     class SortedPosList
     {
+        //Props
         private List<Position> posList;
         public List<Position> PosList
         {
@@ -23,54 +25,105 @@ namespace Labb2
                 posList = value;
             }
         }
+        private string filePath;
 
+
+        //Constructors
         public SortedPosList()
         {
             posList = new List<Position>();
         }
-        public SortedPosList(string filePath)
+        public SortedPosList(string path)
         {
             posList = new List<Position>();
-            loadFile(filePath);
+            filePath = path;
+            loadFileToList(path);
         }
 
-        public void loadFile(string filePath)
+        //File handlers
+        public void loadFileToList(string filePath)
         {
             int index = 0;
             string line;
-
-            System.IO.StreamReader file = new System.IO.StreamReader(filePath);
-            while ((line = file.ReadLine()) != null)
+            StreamReader file;
+            try
+            {
+                file = new StreamReader(filePath); /* Loads file */
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not find file");
+                return;
+            }
+            while ((line = file.ReadLine()) != null) /* Iterates file */
             {
                 //System.Console.WriteLine(line);
-                string[] bits = line.Split(',');
-                try
+                Position pos = parseString(line);
+                if (pos != null)
                 {
-                    string a = bits[0].Split('(')[1];
-                    string b = bits[1].Split(')')[0];
-                    double x = Convert.ToDouble(a);
-                    double y = Convert.ToDouble(b);
-                    posList.Add(new Position(x, y));
-                } 
-                catch (Exception e)
-                {
-                    Console.WriteLine("Error parsing line: " + e);
+                    posList.Add(pos);
                 }
-                
                 index++;
             }
-            file.Close();
+            file.Close(); /* Closes file when completed */
+        }
+        private Position parseString(string line)
+        {
+            string[] bits = line.Split(',');
+            try
+            {
+                string a = bits[0].Split('(')[1]; /* String value of x */
+                string b = bits[1].Split(')')[0]; /* String value of y */
+                double x = Convert.ToDouble(a); /* Converted value of x */
+                double y = Convert.ToDouble(b); /* Converted value of y */
+                
+                return new Position(x, y);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error parsing line: " + e);
+                return null;
+            }
+        }
+
+        public bool saveFile(int index, Position pos)
+        {
+
+            List<string> coordList = File.ReadAllLines(filePath).ToList();
+
+            string lineToSave = "(" + pos.X + "," + pos.Y + ")";
+            Console.WriteLine("index: " + index + "coordlist count: " + coordList.Count());
+            if (index == coordList.Count())
+            {
+                File.AppendText(lineToSave);
+            } else
+            {
+                coordList.Insert(index, lineToSave);
+                File.WriteAllLines(filePath, coordList);
+            }
+            
+            for (int i = 0; i < coordList.Count(); i++)
+            {
+                Console.WriteLine(coordList[i]);
+
+            }
+            return true;
         }
 
         //Methods
         public void Add(Position pos)
         {
-            double len = pos.length();
+            double len = pos.Length();
             for (int i = 0; i < posList.Count(); i++)
             {
-                if (len < posList[i].length())
+                if (len < posList[i].Length())
                 {
                     posList.Insert(i, pos);
+                    Console.WriteLine("Add method. i: " + i + " Filepath: " + filePath);
+                    if (filePath != null) // Save to file if path is filePath is set
+                    {
+                        saveFile(i, pos);
+                    }
                     return;
                 }
             }
@@ -81,7 +134,7 @@ namespace Labb2
             SortedPosList newList = new SortedPosList();
             for (int i = 0; i < posList.Count(); i++)
             {
-                newList.Add(posList[i].clone());
+                newList.Add(posList[i].Clone());
             }
             return newList;
         }
@@ -91,7 +144,7 @@ namespace Labb2
         }
         private List<Position> Sort(List<Position> list)
         {
-            list.Sort((x, y) => x.length().CompareTo(y.length()));
+            list.Sort((x, y) => x.Length().CompareTo(y.Length()));
             return list;
         } /* Not used */
         public bool Remove(Position pos)
@@ -106,6 +159,27 @@ namespace Labb2
             }
             return true;
         }
+        public SortedPosList CircleContent(Position centerPos, double radius)
+        {
+            SortedPosList newList = new SortedPosList();
+            for (int i = 0; i < posList.Count(); i++)
+            {
+                double d = Math.Pow(posList[i].X - centerPos.X, 2) + Math.Pow(posList[i].Y - centerPos.Y, 2);
+                double sqR = Math.Pow(radius, 2);
+                
+                if (d < sqR)
+                {
+                    Console.WriteLine("INSIDE CIRCLE. d :" + d + "  sqR: " + sqR);
+                    newList.Add(posList[i].Clone());
+                }
+            }
+            return newList;
+        }
+        public override string ToString()
+        {
+            return string.Join(", ", posList);
+        }
+
 
         // Operators
         public Position this[int i]
@@ -120,7 +194,7 @@ namespace Labb2
             SortedPosList newList = sp1.Clone();
             for (int i = 0; i < sp2.Count(); i++)
             {
-                newList.Add(sp2[i].clone());
+                newList.Add(sp2[i].Clone());
             }
             return newList;
         }

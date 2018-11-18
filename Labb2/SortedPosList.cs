@@ -44,7 +44,7 @@ namespace Labb2
         }
 
         //File handlers
-        public void loadFileToList(string filePath)
+        private void loadFileToList(string filePath)
         {
             int index = 0;
             string line;
@@ -89,7 +89,7 @@ namespace Labb2
                 return null;
             }
         }
-        public bool SavePosToFile(int index, Position pos)
+        private bool SavePosToFile(int index, Position pos)
         {
             List<string> coordList = File.ReadAllLines(filePath).ToList();
             string stringToSave = pos.ToString(); // "(" + pos.X + "," + pos.Y + ")";
@@ -98,7 +98,7 @@ namespace Labb2
 
             //Appends Line
             using (StreamWriter stream = File.AppendText(filePath)){
-                Console.WriteLine("INDEX <= Count: " + coordList.Count() + " Index: " + index);
+                //Console.WriteLine("INDEX <= Count: " + coordList.Count() + " Index: " + index);
                 if ((coordList.Count() == 0) || (index >= Count()))
                 {
                     stream.WriteLine(stringToSave);
@@ -141,7 +141,7 @@ namespace Labb2
             file.Close();
             File.WriteAllLines(filePath, sortedList);
 
-            return true;
+            return didFind;
         }
 
         //Methods

@@ -43,7 +43,7 @@ namespace Labb2
             }
         }
         
-        public Position(Double x, Double y)
+        public Position(double x, double y)
         {
             X = x;
             Y = y;
@@ -107,8 +107,8 @@ namespace Labb2
         }
         public static Position operator -(Position p1, Position p2)
         {
-            Double newX = p1.X - p2.X < 0 ? 0 : p1.X - p2.X;
-            Double newY = p1.Y - p2.Y < 0 ? 0 : p1.Y - p2.Y;
+            double newX = p1.X - p2.X < 0 ? 0 : p1.X - p2.X;
+            double newY = p1.Y - p2.Y < 0 ? 0 : p1.Y - p2.Y;
             return new Position(newX, newY);
         }
         public static Position operator * (Position p1, Position p2)
@@ -117,8 +117,8 @@ namespace Labb2
         }
         public static double operator % (Position p1, Position p2)
         {
-            double newX = Convert.ToDouble(MathF.Pow((float)(p1.X - p2.X), 2));
-            double newY = Convert.ToDouble(MathF.Pow((float)(p1.Y - p2.Y), 2));
+            double newX = Convert.ToDouble(Math.Pow((float)(p1.X - p2.X), 2));
+            double newY = Convert.ToDouble(Math.Pow((float)(p1.Y - p2.Y), 2));
             return Math.Sqrt(newX + newY);
         }
     }

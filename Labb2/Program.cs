@@ -14,6 +14,7 @@ namespace Labb2
 
             Console.ReadLine();
         }
+        //Tests
         private static void pathTest()
         {
             // Testing a list connected to a path. 

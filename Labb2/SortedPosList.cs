@@ -70,7 +70,6 @@ namespace Labb2
             }
             file.Close(); /* Closes file when completed */
         }
-
         private Position parseString(string line)
         {
             string[] bits = line.Split(',');
@@ -221,7 +220,6 @@ namespace Labb2
         {
             return string.Join(", ", posList);
         }
-
 
         // Operators
         public Position this[int i]
